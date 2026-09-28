@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>家庭菜单</title>
+  <link rel="stylesheet" href="viewer.css">
+  <script src="viewer.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="brand">家里的饭 / FAMILY MENU</p>
+      <p id="demo" class="demo" hidden>演示菜单 · 非真实家庭安排</p>
+      <h1 id="heading">正在打开菜单…</h1>
+      <p id="meta" class="meta"></p>
+    </header>
+    <p id="error" class="error" role="alert" hidden></p>
+    <section id="overview" class="overview" aria-label="本餐菜品汇总" hidden></section>
+    <section id="dishes" hidden>
+      <p class="eyebrow">这一餐的菜单</p>
+      <p class="hint">点开一道菜，查看食材与做法。</p>
+      <div id="dish-list"></div>
+    </section>
+    <section id="shopping" class="shopping" hidden>
+      <h2>食材购买参考</h2>
+      <p class="hint">仅列主要食材与可能不常备的调味，购买前请核对家中现有食材。</p>
+      <div id="shopping-list"></div>
+    </section>
+    <footer id="footer" hidden>这是确认时保存的一餐菜单，之后的编辑不会改变此链接中的内容。</footer>
+  </main>
+</body>
+</html>

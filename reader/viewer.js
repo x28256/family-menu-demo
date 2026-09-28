@@ -31,7 +31,8 @@ async function readMenu() {
         ["荤菜", "素菜", "汤品"].includes(dish.category) && typeof dish.portion === "string" &&
         dish.portion.length <= 200 && strings(dish.ingredients, 100) && strings(dish.steps, 100) &&
         typeof dish.sourceName === "string" && dish.sourceName.length <= 200 &&
-        typeof dish.sourceUrl === "string" && dish.sourceUrl.length <= 1000) ||
+        typeof dish.sourceUrl === "string" && dish.sourceUrl.length <= 1000 &&
+        (dish.nameOnly === undefined || typeof dish.nameOnly === "boolean")) ||
       !(menu.shopping === null || strings(menu.shopping, 10))) throw new Error("invalid menu");
   return menu;
 }
@@ -59,25 +60,29 @@ function render(menu) {
     summary.append(title, text("span", "", "expand"));
     details.append(summary);
     const body = text("div", "", "body");
-    body.append(text("p", dish.portion, "portion"), text("h3", "准备食材"));
-    const ingredients = document.createElement("ul");
-    dish.ingredients.forEach((ingredient) => ingredients.append(text("li", ingredient)));
-    body.append(ingredients, text("h3", "做法"));
-    const steps = document.createElement("ol");
-    dish.steps.forEach((step) => steps.append(text("li", step)));
-    body.append(steps);
-    const source = text("p", `来源：${dish.sourceName}`, "source");
-    try {
-      const url = new URL(dish.sourceUrl);
-      if (url.protocol === "https:" && !url.username && !url.password) {
-        const link = text("a", "查看原菜谱");
-        link.href = url.href;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        source.append(" · ", link);
-      }
-    } catch (_) { /* An absent source link does not hide the menu. */ }
-    body.append(source);
+    if (dish.nameOnly === true) {
+      body.append(text("p", "仅记录菜名；未提供食材与做法，不计入购买建议。", "portion"));
+    } else {
+      body.append(text("p", dish.portion, "portion"), text("h3", "准备食材"));
+      const ingredients = document.createElement("ul");
+      dish.ingredients.forEach((ingredient) => ingredients.append(text("li", ingredient)));
+      body.append(ingredients, text("h3", "做法"));
+      const steps = document.createElement("ol");
+      dish.steps.forEach((step) => steps.append(text("li", step)));
+      body.append(steps);
+      const source = text("p", `来源：${dish.sourceName}`, "source");
+      try {
+        const url = new URL(dish.sourceUrl);
+        if (url.protocol === "https:" && !url.username && !url.password) {
+          const link = text("a", "查看原菜谱");
+          link.href = url.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          source.append(" · ", link);
+        }
+      } catch (_) { /* An absent source link does not hide the menu. */ }
+      body.append(source);
+    }
     details.append(body);
     list.append(details);
   });
